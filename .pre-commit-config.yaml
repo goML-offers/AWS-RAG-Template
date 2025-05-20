@@ -1,0 +1,72 @@
+# THIS FILE IS USED TO RUN A PRE CHECK ON THE CODE BEFORE COMMITTING.
+# IT WILL DO MULTIPLE CHECKS ON THE CODE AND IF ANY OF THEM FAILS, IT WILL NOT ALLOW THE COMMIT.
+
+repos:
+  - repo: https://github.com/psf/black
+    rev: 24.4.2
+    hooks:
+      - id: black
+
+  - repo: https://github.com/pycqa/isort
+    rev: 5.13.2
+    hooks:
+      - id: isort
+        name: isort (with Black profile)
+        args: ["--profile=black"]
+
+  - repo: https://github.com/pycqa/flake8
+    rev: 7.1.0
+    hooks:
+      - id: flake8
+        additional_dependencies: [flake8]
+        args:
+          - "--max-line-length=150"
+          #- "--ignore=F401,F403,F405,F821,W503"
+        # continue_on_error: true
+
+  - repo: https://github.com/hmrc/security-git-hooks
+    rev: release/1.11.0
+    hooks:
+      - id: secrets_filecontent
+        name: Checking staged files for sensitive content
+        exclude: >-
+          .tar$|.gz$|.jar$|.7z$|.rar$|.bz2$|.zip$|.gzip$|.war$|.ear$|.xlsx$
+          |.xls$|.docx$|.doc$|.pptx$|.pdf$|.jpg$|.png$|.jpeg$|.tif$|.tiff$
+          |.gif$|.bmp$|.webp$|.svg$|.ico$|.psd$|.exe$|.dll$|.dmg$|.de$|.rpm$
+      # - id: secrets_filename
+      #   name: Checking staged files for sensitive file types
+      #   exclude: >-
+      #     .tar$|.gz$|.jar$|.7z$|.rar$|.bz2$|.zip$|.gzip$|.war$|.ear$|.xlsx$
+      #     |.xls$|.docx$|.doc$|.pptx$|.pdf$|.jpg$|.png$|.jpeg$|.tif$|.tiff$
+      #     |.gif$|.bmp$|.webp$|.svg$|.ico$|.psd$|.exe$|.dll$|.dmg$|.de$|.rpm$
+
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.6.0
+    hooks:
+      - id: trailing-whitespace
+        exclude: ^.*\.py$
+      - id: end-of-file-fixer
+        exclude: ^.*\.py$
+      - id: check-yaml
+      - id: check-added-large-files
+      - id: check-merge-conflict
+      - id: check-json
+        exclude: ^.vscode/.*
+
+  - repo: https://github.com/pre-commit/mirrors-prettier
+    rev: v3.1.0
+    hooks:
+      - id: prettier
+        exclude: ^.*\.py$
+
+  - repo: https://github.com/igorshubovych/markdownlint-cli
+    rev: v0.41.0
+    hooks:
+      - id: markdownlint
+        args: [--fix]
+
+  # - repo: https://github.com/mrtazz/checkmake
+  #   rev: 0.2.2
+  #   hooks:
+  #     - id: checkmake
+  #       files: Makefile

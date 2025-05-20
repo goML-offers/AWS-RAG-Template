@@ -1,0 +1,11 @@
+**/.git
+**/.github
+commands
+
+**/__pycache__/
+**/notebooks
+
+logs/*.log
+logs/*.log.*
+
+test.py
